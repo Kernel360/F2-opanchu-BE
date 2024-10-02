@@ -9,13 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,17 +31,6 @@ public class SecurityConfig {
 	public static final String[] PERMITTED_ALL_URI = {
 		"/swagger-ui/**", "/v3/api-docs/*"
 	};
-
-	@Bean
-	public WebSecurityCustomizer configure() { // 스프링 시큐리티 기능 비활성화
-		return (web) -> web.ignoring()
-			.requestMatchers(
-				new AntPathRequestMatcher("/img/**"),
-				new AntPathRequestMatcher("/css/**"),
-				new AntPathRequestMatcher("/js/**"),
-				new AntPathRequestMatcher("/favicon.ico/**")
-			);
-	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
