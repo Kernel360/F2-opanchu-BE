@@ -8,6 +8,7 @@ import org.auction.client.exception.bid.BidException;
 import org.auction.client.exception.image.ImageException;
 import org.auction.client.exception.jwt.JwtTokenException;
 import org.auction.client.exception.member.MemberException;
+import org.auction.client.exception.qna.QnaException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,6 +55,23 @@ public class GlobalExceptionHandler {
 		);
 		return ResponseEntity
 			.status(e.getBidCode().getHttpStatus())
+			.body(resultDto);
+	}
+
+	@ExceptionHandler(QnaException.class)
+	public ResponseEntity<ResultDto<Object>> handleQnaException(
+		QnaException e,
+		HttpServletRequest request
+	) {
+		log.error("errorCode: {}, url: {}, message: {}",
+			e.getQnaCode(), request.getRequestURI(), e.getDetailMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			e.getQnaCode().getStatusCode(),
+			e.getQnaCode().getResultMsg()
+		);
+		return ResponseEntity
+			.status(e.getQnaCode().getHttpStatus())
 			.body(resultDto);
 	}
 
